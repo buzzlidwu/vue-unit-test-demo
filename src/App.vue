@@ -11,9 +11,7 @@
               <h1 data-testId="pageSize">{{ page }}</h1>
             </v-col>
             <v-col cols="4" style="textAlign:center">
-              <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="pageButtonStatus" data-testId="nextBtn"
-                >Next Page</v-btn
-              >
+              <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="pageButtonStatus" data-testId="nextBtn">Next Page</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -43,11 +41,11 @@ export default {
   },
 
   data: () => ({
-    page: 0,
+    page: 1,
     userLists: [],
     pageButtonStatus: false,
     errorResp: false,
-    errorMsg: 'API CALL ERROR PLASE TRY AGAIN'
+    errorMsg: 'API CALL ERROR PLEASE TRY AGAIN'
   }),
   watch: {
     async page() {
@@ -73,7 +71,7 @@ export default {
       this.page++
     },
     prevPage() {
-      if (this.page === 0) {
+      if (this.page <= 1) {
         return
       }
       this.page--

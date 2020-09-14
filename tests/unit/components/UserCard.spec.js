@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Vuetify from 'vuetify'
 import UserCard from '@/components/UserCard.vue'
+
 const mockUser = {
   id: 7,
   email: 'michael.lawson@reqres.in',
@@ -8,24 +9,30 @@ const mockUser = {
   last_name: 'Lawson',
   avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/follettkyle/128.jpg'
 }
+
 describe('UserCard.vue', () => {
-  const vuetify = new Vuetify()
-  const wrapper = mount(UserCard, {
-    vuetify,
-    propsData: {
-      user: mockUser
-    }
+  const createWrapper = (component, user) => {
+    return mount(component, {
+      vuetify: new Vuetify(),
+      propsData: {
+        user: user
+      }
+    })
+  }
+
+  let wrapper
+  const $fullName = `${mockUser.first_name}_${mockUser.last_name}`
+  beforeEach(() => {
+    wrapper = createWrapper(UserCard, mockUser)
   })
 
-  it('has_username_info_should_computed_fullName', async () => {
-    const fullName = 'Michael_Lawson'
-    expect(wrapper.vm.fullName).toBe(fullName)
+  it('should_return_fullName', async () => {
+    expect(wrapper.vm.fullName).toBe($fullName)
   })
 
-  it('fullname_should_render_in_fullname_col', () => {
-    const fullName = `${mockUser.first_name}_${mockUser.last_name}`
+  it('full_name_should_render_in_full_name_col', () => {
     const fullNameView = wrapper.find("[data-testId='fullName']")
-    expect(fullNameView.text()).toBe(fullName)
+    expect(fullNameView.text()).toBe($fullName)
   })
 
   it('avatar_should_render_in_avatar_col', () => {

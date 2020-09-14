@@ -4,11 +4,16 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
+export const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/directory',
+    name: 'directory',
+    component: () => import('@/views/Directory')
   }
 ]
 

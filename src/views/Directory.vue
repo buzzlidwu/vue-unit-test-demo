@@ -16,12 +16,12 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" style="textAlign:center" v-if="userLists.length === 0">
+      <v-col cols="12" style="textAlign:center" v-if="userList.length === 0">
         <span data-testId="emptyListMsg">USER LIST IS EMPTY</span>
         <br />
         <span test-dataId="errorMsg" v-if="errorResp" style="color:red;fontSize:30px"> {{ errorMsg }} </span>
       </v-col>
-      <v-col cols="4" v-else v-for="user of userLists" :key="user.mail" data-testId="user-info">
+      <v-col cols="4" v-else v-for="user of userList" :key="user.mail" data-testId="user-info">
         <UserCard :user="user" />
       </v-col>
     </v-row>
@@ -40,7 +40,7 @@ export default {
 
   data: () => ({
     page: 1,
-    userLists: [],
+    userList: [],
     pageButtonStatus: false,
     errorResp: false,
     errorMsg: 'API CALL ERROR PLEASE TRY AGAIN'
@@ -53,16 +53,22 @@ export default {
   },
 
   methods: {
+    delay(ms) {
+      return new Promise(res => {
+        setTimeout(res, ms)
+      })
+    },
     async getUsers() {
       this.pageButtonStatus = true
       try {
+        // await this.delay(2000)
         const res = await getUserList(this.page)
         const { data } = res.data
-        this.userLists = data
+        this.userList = data
         this.errorResp = false
       } catch {
         this.errorResp = true
-        this.userLists = []
+        this.userList = []
       } finally {
         this.pageButtonStatus = false
       }
@@ -83,5 +89,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

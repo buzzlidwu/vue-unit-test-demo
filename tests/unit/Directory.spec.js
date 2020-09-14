@@ -39,7 +39,7 @@ describe('Directory.vue', () => {
   })
 
   it('userlists_is_empty_should_show_empty_msg', async () => {
-    wrapper.vm.userLists = []
+    wrapper.vm.userList = []
 
     await wrapper.vm.$nextTick()
 
@@ -48,7 +48,7 @@ describe('Directory.vue', () => {
   })
 
   it('userLists_has_user_should_render_user_list_cols', async () => {
-    wrapper.vm.userLists = mockGetUserResolved
+    wrapper.vm.userList = mockGetUserResolved
 
     await wrapper.vm.$nextTick()
 
@@ -56,25 +56,25 @@ describe('Directory.vue', () => {
     expect(userListCols.length).toBe(3)
   })
 
-  it('getUserApi_resolved_should_insert_data_to_userLists', async () => {
+  it('getUserApi_resolved_should_insert_data_to_userList', async () => {
     getUserList.mockResolvedValue({
       data: { data: mockGetUserResolved }
     })
 
     wrapper.vm.getUsers()
 
-    expect(wrapper.vm.userLists.length).toBe(0)
-    expect(wrapper.vm.userLists).toEqual([])
+    expect(wrapper.vm.userList.length).toBe(0)
+    expect(wrapper.vm.userList).toEqual([])
 
     await FlushPromises()
 
-    expect(wrapper.vm.userLists.length).toBe(3)
-    expect(wrapper.vm.userLists).toBe(mockGetUserResolved)
+    expect(wrapper.vm.userList.length).toBe(3)
+    expect(wrapper.vm.userList).toBe(mockGetUserResolved)
   })
 
-  it('getUserApi_rejected_should_clear_userlists', async () => {
-    wrapper.vm.userLists = mockGetUserResolved
-    expect(wrapper.vm.userLists).toEqual(mockGetUserResolved)
+  it('getUserApi_rejected_should_clear_userlist', async () => {
+    wrapper.vm.userList = mockGetUserResolved
+    expect(wrapper.vm.userList).toEqual(mockGetUserResolved)
 
     getUserList.mockRejectedValue(undefined)
 
@@ -82,7 +82,7 @@ describe('Directory.vue', () => {
 
     await FlushPromises()
 
-    expect(wrapper.vm.userLists).toEqual([])
+    expect(wrapper.vm.userList).toEqual([])
   })
 
   it('getUserApi_rejected_should_show_errorMsg', async () => {

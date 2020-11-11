@@ -48,4 +48,9 @@ describe('UserCard.vue', () => {
   it('user_props_should_always_required', () => {
     expect(UserCard.props.user.required).toBe(true)
   })
+  it('testlaa', async () => {
+    await wrapper.find('[ data-test="UserCard" ]').trigger('click')
+    expect(wrapper.emitted().emitTest).toBeTruthy()
+    expect(wrapper.emitted().emitTest[0][0]).toBe(0)
+  })
 })

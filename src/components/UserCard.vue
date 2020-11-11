@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="300" outlined>
+  <v-card class="mx-auto" max-width="300" outlined @click="triggerEmit" data-test="UserCard">
     <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">STAFF</div>
@@ -27,6 +27,14 @@ export default {
       const { first_name, last_name } = this.user
       return `${first_name}_${last_name}`
     }
+  },
+  methods: {
+    triggerEmit() {
+      this.$emit('emitTest', 0)
+    }
+  },
+  created() {
+    console.log('userCard')
   }
 }
 </script>

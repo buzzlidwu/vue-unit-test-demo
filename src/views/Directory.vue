@@ -4,24 +4,24 @@
       <v-col cols="6" style="textAlign:center">
         <v-row>
           <v-col cols="4">
-            <v-btn large color="error" width="100px" @click.prevent="prevPage" :disabled="pageButtonStatus" data-testId="prevBtn">Prev Page</v-btn>
+            <v-btn large color="error" width="100px" @click.prevent="prevPage" :disabled="buttonDisable" data-testId="prevBtn">Prev Page </v-btn>
           </v-col>
           <v-col cols="4" style="textAlign:center">
-            <h1 data-testId="pageSize">{{ page }}</h1>
+            <h1 data-testId="pageNumber">{{ pageNumber }}</h1>
           </v-col>
           <v-col cols="4" style="textAlign:center">
-            <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="pageButtonStatus" data-testId="nextBtn">Next Page</v-btn>
+            <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="buttonDisable" data-testId="nextBtn">Next Page </v-btn>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" style="textAlign:center" v-if="userList.length === 0">
+      <v-col cols="12" style="textAlign:center" v-if="employeeList.length === 0">
         <span data-testId="emptyListMsg">USER LIST IS EMPTY</span>
         <br />
-        <span test-dataId="errorMsg" v-if="errorResp" style="color:red;fontSize:30px"> {{ errorMsg }} </span>
+        <span test-dataId="errorMsg" v-if="errorResp" style="color:#ff0000;fontSize:30px"> {{ errorMsg }} </span>
       </v-col>
-      <v-col cols="4" v-else v-for="user of userList" :key="user.mail" data-testId="user-info">
+      <v-col cols="4" v-else v-for="user of employeeList" :key="user.mail" data-testId="user-info">
         <UserCard :user="user" />
       </v-col>
     </v-row>
@@ -30,24 +30,24 @@
 
 <script>
 import UserCard from '@/components/UserCard'
-import { getUserList } from '@/apis/userApi'
+import { getEmployeeList } from '@/apis/userApi'
 
 export default {
-  name: 'AddressBook',
+  name: 'Directory',
   components: {
     UserCard
   },
 
   data: () => ({
-    page: 1,
-    userList: [],
-    pageButtonStatus: false,
+    pageNumber: 1,
+    employeeList: [],
+    buttonDisable: false,
     errorResp: false,
     errorMsg: 'API CALL ERROR PLEASE TRY AGAIN'
   }),
 
   watch: {
-    async page() {
+    pageNumber: async function() {
       await this.getUsers()
     }
   },
@@ -55,36 +55,38 @@ export default {
   methods: {
     delay(ms) {
       return new Promise(res => {
-        setTimeout(res, ms)
+        return res()
       })
     },
     async getUsers() {
-      this.pageButtonStatus = true
+      this.buttonDisable = true
+      this.errorResp = false
       try {
-        // await this.delay(2000)
-        const res = await getUserList(this.page)
+        await this.delay(5000)
+        const res = await getEmployeeList(this.pageNumber)
         const { data } = res.data
-        this.userList = data
-        this.errorResp = false
+        this.employeeList = data
       } catch {
         this.errorResp = true
-        this.userList = []
+        this.employeeList = []
       } finally {
-        this.pageButtonStatus = false
+        this.buttonDisable = false
       }
     },
     nextPage() {
-      this.page++
+      this.pageNumber++
     },
     prevPage() {
-      if (this.page <= 1) {
+      if (this.pageNumber <= 1) {
         return
       }
-      this.page--
+      this.pageNumber--
     }
   },
 
   async created() {
+    console.log('Directory')
+
     await this.getUsers()
   }
 }

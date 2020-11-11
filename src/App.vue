@@ -9,12 +9,16 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn text @click="$router.push({ name: 'Home' })" data-testId="homeBtn">
+      <v-btn text @click="routerGoTo('Home')" data-testId="homeBtn">
         <span class="mr-2">Home</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <v-btn text @click="$router.push({ name: 'directory' })" data-testId="directoryBtn">
+      <v-btn text @click="routerGoTo('directory')" data-testId="directoryBtn">
         <span class="mr-2">Directory</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-btn text @click="routerGoTo('directoryStore')" data-testId="directoryBtn">
+        <span class="mr-2">DirectoryStore</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
@@ -27,6 +31,15 @@
 <script>
 export default {
   name: 'app',
-  methods: {}
+  methods: {
+    routerGoTo(routeName) {
+      if (this.$route.name !== routeName) {
+        this.$router.push({ name: routeName })
+      }
+    }
+  },
+  created() {
+    console.log('app')
+  }
 }
 </script>
